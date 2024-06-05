@@ -1,9 +1,13 @@
 package com.msi.dispatch.handler;
 
+import com.msi.dispatch.message.OrderCreated;
 import com.msi.dispatch.service.DispatchService;
+import com.msi.dispatch.util.TestEventData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +25,8 @@ class OrderCreatedHandlerTest {
 
     @Test
     void listern() {
-        orderCreatedHandler.listern("payload");
-        Mockito.verify(dispatchService, Mockito.times(1)).process("payload");
+        OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
+        orderCreatedHandler.listern(orderCreated);
+        Mockito.verify(dispatchService, Mockito.times(1)).process(orderCreated);
     }
 }

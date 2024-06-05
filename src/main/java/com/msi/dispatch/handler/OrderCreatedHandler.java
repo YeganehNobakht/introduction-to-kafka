@@ -1,5 +1,6 @@
 package com.msi.dispatch.handler;
 
+import com.msi.dispatch.message.OrderCreated;
 import com.msi.dispatch.service.DispatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class OrderCreatedHandler {
             topics = "order.created",
             groupId = "dispatch.order.created.consumer"
     )
-    public void listern(String payload){
+    public void listern(OrderCreated payload){
         log.info("Received message: payload: " + payload);
         dispatchService.process(payload);
     }
