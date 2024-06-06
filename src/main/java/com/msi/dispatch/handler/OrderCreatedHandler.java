@@ -17,7 +17,8 @@ public class OrderCreatedHandler {
     @KafkaListener(
             id = "orderCunsumerClient",
             topics = "order.created",
-            groupId = "dispatch.order.created.consumer"
+            groupId = "dispatch.order.created.consumer",
+            containerFactory = "kafkaListenerContainerFactory"
     )
     public void listern(OrderCreated payload){
         log.info("Received message: payload: " + payload);
