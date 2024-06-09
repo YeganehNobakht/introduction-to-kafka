@@ -22,6 +22,10 @@ public class OrderCreatedHandler {
     )
     public void listern(OrderCreated payload){
         log.info("Received message: payload: " + payload);
-        dispatchService.process(payload);
+        try {
+            dispatchService.process(payload);
+        } catch (Exception e) {
+            log.error("*processing failure: " + e);
+        }
     }
 }

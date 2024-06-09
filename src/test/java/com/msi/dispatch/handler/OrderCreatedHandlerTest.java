@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class OrderCreatedHandlerTest {
 
@@ -24,9 +25,17 @@ class OrderCreatedHandlerTest {
     }
 
     @Test
-    void listern() {
+    void listern_Success() throws Exception {
         OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
         orderCreatedHandler.listern(orderCreated);
         Mockito.verify(dispatchService, Mockito.times(1)).process(orderCreated);
+    }
+
+    @Test
+    public void listen_ServiceThrowsException() throws Exception{
+        OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
+        doThrow(new  RuntimeException("Service failure")).when(dispatchService).process(orderCreated);
+        orderCreatedHandler.listern(orderCreated);
+        verify(dispatchService, times(1)).process(orderCreated);
     }
 }
