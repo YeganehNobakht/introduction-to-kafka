@@ -26,16 +26,18 @@ class OrderCreatedHandlerTest {
 
     @Test
     void listern_Success() throws Exception {
+        String key = UUID.randomUUID().toString();
         OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
-        orderCreatedHandler.listern(orderCreated);
-        Mockito.verify(dispatchService, Mockito.times(1)).process(orderCreated);
+        orderCreatedHandler.listern(0, key, orderCreated);
+        Mockito.verify(dispatchService, Mockito.times(1)).process(key, orderCreated);
     }
 
     @Test
     public void listen_ServiceThrowsException() throws Exception{
+        String key = UUID.randomUUID().toString();
         OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
-        doThrow(new  RuntimeException("Service failure")).when(dispatchService).process(orderCreated);
-        orderCreatedHandler.listern(orderCreated);
-        verify(dispatchService, times(1)).process(orderCreated);
+        doThrow(new  RuntimeException("Service failure")).when(dispatchService).process(key, orderCreated);
+        orderCreatedHandler.listern(0,key, orderCreated);
+        verify(dispatchService, times(1)).process(key, orderCreated);
     }
 }
