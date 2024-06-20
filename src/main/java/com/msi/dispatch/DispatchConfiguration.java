@@ -14,6 +14,7 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.web.client.RestTemplate;
 
 import javax.swing.plaf.PanelUI;
 import java.util.HashMap;
@@ -22,6 +23,11 @@ import java.util.Map;
 @ComponentScan(basePackages = {"com.msi"})
 @Configuration
 public class DispatchConfiguration {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String , Object> kafkaListenerContainerFactory(ConsumerFactory<String , Object> consumerFactory){
