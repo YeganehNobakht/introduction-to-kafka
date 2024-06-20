@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +39,8 @@ class OrderCreatedHandlerTest {
         String key = UUID.randomUUID().toString();
         OrderCreated orderCreated = TestEventData.buildOrderCreatedEvent(UUID.randomUUID(), UUID.randomUUID().toString());
         doThrow(new  RuntimeException("Service failure")).when(dispatchService).process(key, orderCreated);
-        orderCreatedHandler.listern(0,key, orderCreated);
+        Exception exception = assertThrows(RuntimeException.class, () -> orderCreatedHandler.listern(0,key, orderCreated));
+        assertThat(exception.getMessage(), equalTo("Service failure"));
         verify(dispatchService, times(1)).process(key, orderCreated);
     }
 }
