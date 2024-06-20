@@ -23,6 +23,7 @@ public class StockServiceClient {
         this.stockServiceEndpoint = stockServiceEndpoint;
     }
 
+
     /**
      * The stock service returns true if item is available, false otherwise.
      */
